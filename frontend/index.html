@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPMD Triage Capture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-pop-in {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex justify-center py-10 font-sans text-gray-800">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden min-h-[600px] flex flex-col relative">
+
+        <div class="bg-blue-600 text-white p-5 shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">OPMD Triage System</h1>
+                <p class="text-sm text-blue-200 mt-1">Primary Care Capture Portal</p>
+            </div>
+            <div id="queueBadge"
+                class="hidden bg-yellow-400 text-blue-900 text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                Offline Queue: <span id="queueCount">0</span>
+            </div>
+        </div>
+
+        <div class="p-6 flex-grow flex flex-col">
+            <form id="triageForm" class="space-y-4">
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Clinical Image (Oral Cavity)</label>
+                    <input type="file" id="imageInput" accept="image/*" required
+                        class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 rounded-lg p-2 cursor-pointer">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Patient Name</label>
+                        <input type="text" id="nameInput" placeholder="Full Name" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">NIC Number</label>
+                        <input type="text" id="nicInput" placeholder="e.g., 981234567V"
+                            pattern="^([0-9]{9}[vVxX]|[0-9]{12})$" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Contact Number</label>
+                        <input type="tel" id="contactInput" placeholder="e.g., 0771234567" pattern="^0[0-9]{9}$"
+                            required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Residential District</label>
+                        <select id="areaInput" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="" disabled selected>Select District</option>
+                            <option value="Ampara">Ampara</option>
+                            <option value="Anuradhapura">Anuradhapura</option>
+                            <option value="Colombo">Colombo</option>
+                            <option value="Gampaha">Gampaha</option>
+                            <option value="Kandy">Kandy</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Age</label>
+                        <input type="number" id="ageInput" placeholder="45" min="1" max="120" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Gender</label>
+                        <select id="sexInput" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="" disabled selected>Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1">Habit</label>
+                        <select id="habitInput" required
+                            class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="None">None</option>
+                            <option value="< 5 Years">
+                                < 5 Yrs</option>
+                            <option value="> 10 Years">> 10 Yrs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-200">
+                    Submit
+                </button>
+            </form>
+
+            <div id="loadingState" class="hidden my-auto text-center animate-pulse">
+                <p class="text-blue-600 font-semibold">Uploading to Gateway...</p>
+                <p class="text-xs text-gray-500">Checking connection...</p>
+            </div>
+
+            <div id="successState" class="hidden my-auto flex flex-col items-center justify-center animate-bounce">
+                <svg class="w-20 h-20 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <p class="text-green-600 font-bold mt-4 text-lg">Submission Successful!</p>
+            </div>
+
+            <div id="offlineState" class="hidden my-auto flex flex-col items-center justify-center">
+                <svg class="w-20 h-20 text-yellow-500 animate-pulse" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z">
+                    </path>
+                </svg>
+                <p class="text-yellow-600 font-bold mt-4 text-lg text-center">No Internet Connection</p>
+                <p class="text-sm text-gray-500 text-center mt-2">Case saved locally. Will sync when online.</p>
+                <button onclick="location.reload()"
+                    class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">Acknowledge</button>
+            </div>
+
+            <div id="resultContainer" class="hidden mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg"></div>
+
+            <div id="queueContainer" class="hidden mt-6 border-t pt-4">
+                <h3 class="text-sm font-bold text-gray-700 mb-2">Pending Offline Cases</h3>
+                <ul id="queueList" class="space-y-2 mb-4"></ul>
+                <button id="syncButton"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition duration-200">
+                    Sync Now
+                </button>
+            </div>
+
+        </div>
+
+        <div id="customSyncModal"
+            class="hidden absolute inset-0 bg-gray-900 bg-opacity-60 z-50 flex items-center justify-center backdrop-blur-sm">
+            <div
+                class="bg-white rounded-2xl shadow-2xl p-6 m-4 w-full text-center animate-pop-in border-t-4 border-green-500">
+                <div
+                    class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4 animate-bounce">
+                    <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2" id="modalTitle">Sync Complete!</h3>
+                <p class="text-sm text-gray-500 mb-6" id="modalMessage">Successfully synced your records to the Gateway.
+                </p>
+                <button id="closeModalBtn"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    Acknowledge
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const getBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        function dataURLtoFile(dataurl, filename) {
+            var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+            return new File([u8arr], filename, { type: mime });
+        }
+
+        function getQueue() { return JSON.parse(localStorage.getItem('opmdQueue') || '[]'); }
+
+        function saveToQueue(record) {
+            const queue = getQueue();
+            queue.push(record);
+            localStorage.setItem('opmdQueue', JSON.stringify(queue));
+            renderQueue();
+        }
+
+        function renderQueue() {
+            const queue = getQueue();
+            const badge = document.getElementById('queueBadge');
+            const container = document.getElementById('queueContainer');
+            const list = document.getElementById('queueList');
+
+            document.getElementById('queueCount').innerText = queue.length;
+
+            if (queue.length > 0) {
+                badge.classList.remove('hidden');
+                container.classList.remove('hidden');
+                list.innerHTML = queue.map((req) =>
+                    `<li class="text-xs bg-yellow-50 border border-yellow-200 p-2 rounded flex justify-between items-center">
+                        <span class="font-semibold text-gray-700">${req.patient_name} <span class="font-normal text-gray-500">(${req.patient_sex})</span></span>
+                        <span class="font-bold text-yellow-600 animate-pulse">Pending</span>
+                    </li>`
+                ).join('');
+            } else {
+                badge.classList.add('hidden');
+                container.classList.add('hidden');
+            }
+        }
+
+        renderQueue();
+
+        document.getElementById('closeModalBtn').addEventListener('click', function () {
+            document.getElementById('customSyncModal').classList.add('hidden');
+            location.reload();
+        });
+
+        document.getElementById('triageForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = document.getElementById('triageForm');
+            const loadingState = document.getElementById('loadingState');
+            const offlineState = document.getElementById('offlineState');
+            const successState = document.getElementById('successState');
+            const resultContainer = document.getElementById('resultContainer');
+
+            const imageFile = document.getElementById('imageInput').files[0];
+            const patientName = document.getElementById('nameInput').value;
+            const patientNIC = document.getElementById('nicInput').value;
+            const patientContact = document.getElementById('contactInput').value;
+            const patientArea = document.getElementById('areaInput').value;
+            const patientAge = document.getElementById('ageInput').value;
+            const patientSex = document.getElementById('sexInput').value; // NEW FIELD
+            const habitDuration = document.getElementById('habitInput').value;
+
+            form.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('patient_name', patientName);
+            formData.append('patient_nic', patientNIC);
+            formData.append('patient_contact', patientContact);
+            formData.append('patient_area', patientArea);
+            formData.append('patient_age', patientAge);
+            formData.append('patient_sex', patientSex); // NEW FIELD
+            formData.append('habit_duration', habitDuration);
+
+            try {
+                const response = await fetch('http://localhost:8000/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error("Network response was not ok");
+                const data = await response.json();
+
+                loadingState.classList.add('hidden');
+                successState.classList.remove('hidden');
+
+                setTimeout(() => {
+                    successState.classList.add('hidden');
+                    resultContainer.classList.remove('hidden');
+                    resultContainer.innerHTML = `
+                        <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-3">Diagnostic Report</h2>
+                        <div class="space-y-3 text-sm">
+                            <p><span class="font-semibold text-gray-600">Patient:</span> ${patientName} (${patientSex})</p>
+                            <p><span class="font-semibold text-gray-600">Location:</span> ${patientArea} District</p>
+                            <p><span class="font-semibold text-gray-600">Prediction:</span> <span class="font-bold text-red-600">${data.diagnostic_report.final_prediction}</span></p>
+                            <p><span class="font-semibold text-gray-600">Confidence:</span> ${(data.diagnostic_report.confidence_score * 100)}%</p>
+                            <p><span class="font-semibold text-gray-600">Advice:</span> ${data.diagnostic_report.triage_advice}</p>
+                            <div class="mt-4">
+                                <p class="font-semibold text-gray-600 mb-2">XAI Grad-CAM Heatmap:</p>
+                                <img src="https://placehold.co/400x300/fee2e2/dc2626?text=Grad-CAM+Heatmap\n(Mock+Asset)" alt="Heatmap" class="w-full rounded-md border border-gray-300">
+                            </div>
+                            <button onclick="location.reload()" class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded transition duration-200">Start New Capture</button>
+                        </div>
+                    `;
+                }, 1500);
+
+            } catch (error) {
+                console.warn("Offline detected! Saving to LocalStorage...");
+                const base64Image = await getBase64(imageFile);
+
+                saveToQueue({
+                    id: Date.now(),
+                    image_base64: base64Image,
+                    image_name: imageFile.name,
+                    patient_name: patientName,
+                    patient_nic: patientNIC,
+                    patient_contact: patientContact,
+                    patient_area: patientArea,
+                    patient_age: patientAge,
+                    patient_sex: patientSex, // NEW FIELD
+                    habit_duration: habitDuration
+                });
+
+                loadingState.classList.add('hidden');
+                offlineState.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('syncButton').addEventListener('click', async function () {
+            const queue = getQueue();
+            if (queue.length === 0) return;
+
+            const syncBtn = document.getElementById('syncButton');
+            syncBtn.innerText = "Syncing with Gateway...";
+            syncBtn.classList.add('animate-pulse');
+
+            let successfulSyncs = [];
+
+            for (let i = 0; i < queue.length; i++) {
+                let record = queue[i];
+                let formData = new FormData();
+
+                const recoveredFile = dataURLtoFile(record.image_base64, record.image_name);
+
+                formData.append('image', recoveredFile);
+                formData.append('patient_name', record.patient_name);
+                formData.append('patient_nic', record.patient_nic);
+                formData.append('patient_contact', record.patient_contact);
+                formData.append('patient_area', record.patient_area);
+                formData.append('patient_age', record.patient_age);
+                formData.append('patient_sex', record.patient_sex); // NEW FIELD
+                formData.append('habit_duration', record.habit_duration);
+
+                try {
+                    const response = await fetch('http://localhost:8000/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (response.ok) successfulSyncs.push(record.id);
+                } catch (e) {
+                    console.error("Still offline, sync failed for:", record.patient_name);
+                }
+            }
+
+            const newQueue = queue.filter(req => !successfulSyncs.includes(req.id));
+            localStorage.setItem('opmdQueue', JSON.stringify(newQueue));
+
+            syncBtn.innerText = "Sync Now";
+            syncBtn.classList.remove('animate-pulse');
+            renderQueue();
+
+            const syncModal = document.getElementById('customSyncModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+
+            if (successfulSyncs.length > 0) {
+                modalTitle.innerText = "Sync Complete!";
+                modalTitle.className = "text-xl font-bold text-green-700 mb-2";
+                modalMessage.innerText = `Successfully synced ${successfulSyncs.length} record(s) to the Gateway!`;
+                syncModal.classList.remove('hidden');
+            } else {
+                modalTitle.innerText = "Sync Failed";
+                modalTitle.className = "text-xl font-bold text-red-600 mb-2";
+                modalMessage.innerText = "Unable to reach the Gateway. Are you still offline?";
+                syncModal.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

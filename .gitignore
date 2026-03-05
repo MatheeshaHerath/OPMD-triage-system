@@ -1,0 +1,15 @@
+﻿# Python Environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Security & Database (DO NOT UPLOAD)
+*.key
+secret.key
+*.db
+opmd_triage.db
+*.sqlite3
+
+# OS Files
+.DS_Store
