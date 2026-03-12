@@ -1,0 +1,36 @@
+name: OPMD Triage CI Pipeline
+
+# 1. The Trigger: When does this pipeline run?
+on:
+  push:
+    branches: [ "main", "ai-development" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 2. The Jobs: What server are we spinning up?
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step A: Pull down the OPMD code from the vault
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Step B: Install the correct version of Python
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    # Step C: Install the Web Architecture dependencies
+    - name: Install Core Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install fastapi uvicorn cryptography
+
+    # Step D: Architecture Syntax Check (Ensure no fatal crashes)
+    - name: Validate Core Backend Architecture
+      run: |
+        python -m py_compile backend/main.py
+        echo "Backend syntax is production-ready."
