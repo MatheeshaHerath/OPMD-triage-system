@@ -13,3 +13,5 @@ opmd_triage.db
 
 # OS Files
 .DS_Store
+
+backend/uploads/
