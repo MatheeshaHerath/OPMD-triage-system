@@ -1,18 +1,25 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login';
-import Upload from './Upload'; // <--- 1. Import the new component
+import Upload from './Upload';
+import Dashboard from './Dashboard'; // 1. WE IMPORTED THE NEW DASHBOARD HERE
 
 function App() {
   return (
-    <BrowserRouter>
-      <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/upload" element={<Upload />} /> {/* <--- 2. Swap the dummy text for the real portal */}
-          <Route path="/dashboard" element={<h2>Medical Officer Review Dashboard</h2>} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <Router>
+      <Routes>
+        {/* The Front Door */}
+        <Route path="/" element={<Login />} />
+
+        {/* The Nurse's Portal */}
+        <Route path="/upload" element={<Upload />} />
+
+        {/* The Surgeon's Portal */}
+        <Route path="/dashboard" element={<Dashboard />} /> {/* 2. WE ADDED THE NEW ROUTE HERE */}
+
+        {/* Catch-all: If someone types a random URL, send them back to login */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -30,8 +30,7 @@ function Upload() {
 
             const response = await axios.post('http://localhost:8000/api/upload', formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
@@ -41,7 +40,12 @@ function Upload() {
 
         } catch (err) {
             console.error(err);
-            setStatusMessage('Upload failed. Check the backend connection.');
+            // This will catch FastAPI's hidden rejection reason and print it in red!
+            if (err.response && err.response.data && err.response.data.detail) {
+                setStatusMessage('FastAPI Error: ' + JSON.stringify(err.response.data.detail));
+            } else {
+                setStatusMessage('Upload failed. Check the backend connection.');
+            }
         }
     };
 
