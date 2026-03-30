@@ -8,10 +8,13 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    role = Column(String, nullable=False) # "midwife" or "surgeon"
-
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    role = Column(String)
+    
+    # NEW: Link this user to a doctor
+    assigned_doctor = Column(String, nullable=True)
+    
 # Table 2: The Patient Cases
 class PatientCase(Base):
     __tablename__ = "patient_cases"
