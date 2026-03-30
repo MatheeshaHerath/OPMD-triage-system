@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 import os
 import shutil
 from cryptography.fernet import Fernet
+from sqlalchemy import func
 
 # Custom local modules
 from database import engine, get_db
@@ -142,3 +143,52 @@ def get_all_cases(db: Session = Depends(get_db)):
     
     # 4. Hand the list back to the frontend
     return cases
+
+# --- MIDWIFE PROFILE ENDPOINT ---
+@app.get("/api/profile/midwife")
+def get_midwife_profile(db: Session = Depends(get_db)):
+    # 1. Get the 5 most recent cases
+    recent_cases = db.query(models.PatientCase).order_by(models.PatientCase.id.desc()).limit(5).all()
+    
+    # 2. The Math (Grouping by YOUR real date_filed column)
+    daily_counts = db.query(
+        func.date(models.PatientCase.date_filed).label('date'),
+        func.count(models.PatientCase.id).label('count')
+    ).group_by(func.date(models.PatientCase.date_filed)).all()
+
+    # 3. Package it for React
+    return {
+        "name": "Nurse Sarah",
+        "role": "Midwife",
+        "assigned_doctor": "Dr. Smith (Surgeon)",
+        "recent_queue": recent_cases,
+        "calendar_data": [{"date": str(d.date), "count": d.count} for d in daily_counts if d.date is not None]
+    }
+
+    # --- DATABASE SEEDING ENDPOINT ---
+@app.post("/api/seed")
+def seed_database(db: Session = Depends(get_db)):
+    # 1. Create Nurse Sarah
+    nurse = db.query(models.User).filter(models.User.username == "nurse_sarah").first()
+    if not nurse:
+        new_nurse = models.User(
+            username="nurse_sarah",
+            hashed_password=auth.get_password_hash("mypassword123"), 
+            role="midwife",
+            assigned_doctor="Dr. Smith"
+        )
+        db.add(new_nurse)
+
+    # 2. Create Dr. Smith
+    doctor = db.query(models.User).filter(models.User.username == "dr smith").first()
+    if not doctor:
+        new_doc = models.User(
+            username="dr smith",
+            hashed_password=auth.get_password_hash("securepassword"),
+            role="surgeon"
+        )
+        db.add(new_doc)
+
+    db.commit()
+    return {"message": "Database successfully seeded with default users!"}
+

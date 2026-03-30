@@ -277,3 +277,54 @@
 .login-button:hover {
   background-color: #0056b3;
 }
+
+/* --- Midwife Profile Styles --- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  font-size: 3rem;
+  background-color: #1a1a1a;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.role-text {
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.calendar-panel {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Customizing the React Calendar Heatmap colors */
+.react-calendar-heatmap text {
+  fill: #aaa;
+  font-size: 10px;
+}
+
+.react-calendar-heatmap .color-empty {
+  fill: #1a1a1a;
+}
+
+.react-calendar-heatmap .color-scale-1 {
+  fill: #0056b3;
+}
+
+.react-calendar-heatmap .color-scale-2 {
+  fill: #0088ff;
+}
+
+.react-calendar-heatmap .color-scale-3 {
+  fill: #00aaff;
+}
