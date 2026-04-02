@@ -328,3 +328,282 @@
 .react-calendar-heatmap .color-scale-3 {
   fill: #00aaff;
 }
+
+/* =====================
+   NAVIGATION BAR STYLES
+   ===================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e24;
+  /* Sleek dark gray */
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #333;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+  color: #4da8da;
+  /* Medical Blue */
+  font-weight: bold;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #a0a0a0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  /* Brighten on hover */
+}
+
+.logout-btn {
+  background-color: #e63946;
+  /* Alert Red */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c1121f;
+}
+
+/* ========================
+   SURGEON DASHBOARD STYLES
+   ======================== */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.dashboard-title {
+  color: white;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.queue-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.queue-table-section {
+  flex: 2;
+  background-color: #2a2a35;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.medical-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  text-align: left;
+}
+
+.medical-table th {
+  color: #4da8da;
+  padding: 1rem;
+  border-bottom: 2px solid #333;
+}
+
+.medical-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.view-btn {
+  background-color: #4da8da;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.view-btn:hover {
+  background-color: #388ab8;
+}
+
+.case-detail-panel {
+  flex: 1;
+  background-color: #1e1e24;
+  border: 1px solid #4da8da;
+  border-radius: 8px;
+  padding: 2rem;
+  color: white;
+}
+
+.ai-image-placeholder {
+  background-color: #121212;
+  border: 2px dashed #4da8da;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  color: #888;
+}
+
+.surgeon-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-approve {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-reject {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* =========================================
+   SIDE-BY-SIDE IMAGES & FULLSCREEN MODAL
+   ========================================= */
+.image-comparison-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.image-box {
+  flex: 1;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.image-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(77, 168, 218, 0.2);
+  border-color: #4da8da;
+}
+
+.image-header {
+  background-color: #2a2a35;
+  padding: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+}
+
+.image-content {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+}
+
+/* The Dark Theater Overlay */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  /* 90% opaque black */
+  z-index: 1000;
+  /* Puts it on top of everything else */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: zoom-out;
+}
+
+.close-fullscreen {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-fullscreen:hover {
+  color: #e63946;
+}
+
+.fullscreen-content {
+  text-align: center;
+  width: 80%;
+  height: 80%;
+}
+
+.fullscreen-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #4da8da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #a0a0a0;
+  margin-top: 1rem;
+}
+
+.surgeon-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  /* Forces it to respect the 100% width */
+  height: 100px;
+  background-color: #121212;
+  border: 1px solid #4da8da;
+  border-radius: 6px;
+  color: white;
+  padding: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  /* Lets the doctor drag the box larger */
+}
+
+.surgeon-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(77, 168, 218, 0.4);
+}

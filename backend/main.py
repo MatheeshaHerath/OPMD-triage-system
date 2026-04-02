@@ -22,6 +22,12 @@ class UserCreate(BaseModel):
     password: str
     role: str = "midwife"
 
+from typing import Optional
+
+class CaseUpdate(BaseModel):
+    status: str
+    surgeon_note: Optional[str] = None
+
 app = FastAPI(title="Secure OPMD Triage System API")
 
 app.add_middleware(
@@ -192,3 +198,16 @@ def seed_database(db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Database successfully seeded with default users!"}
 
+@app.put("/api/cases/{case_id}")
+def update_case(case_id: int, case_data: CaseUpdate, db: Session = Depends(get_db)):
+    db_case = db.query(models.PatientCase).filter(models.PatientCase.id == case_id).first()
+    if not db_case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    # Update the database values
+    db_case.status = case_data.status
+    db_case.surgeon_note = case_data.surgeon_note
+    
+    db.commit()
+    db.refresh(db_case)
+    return {"message": "Case successfully updated!"}

@@ -3,10 +3,15 @@ import Login from './Login';
 import Upload from './Upload';
 import Dashboard from './Dashboard';
 import Profile from './Profile'; // 1. WE IMPORTED THE NEW PROFILE HERE
+import Navbar from './Navbar';
+import CaseDetail from './CaseDetail';
 
 function App() {
   return (
     <Router>
+      {/* The Navbar sits at the very top, watching every page */}
+      <Navbar />
+
       <Routes>
         {/* The Front Door */}
         <Route path="/" element={<Login />} />
@@ -17,14 +22,16 @@ function App() {
         {/* The Surgeon's Queue */}
         <Route path="/dashboard" element={<Dashboard />} />
 
-        {/* The Midwife's Activity Profile */}
-        <Route path="/profile" element={<Profile />} /> {/* 2. WE ADDED THE NEW ROUTE HERE */}
+        {/* The Surgeon's Dedicated Case Review Page */}
+        <Route path="/case/:id" element={<CaseDetail />} />
 
-        {/* Catch-all: If someone types a random URL, send them back to login */}
+        {/* The Midwife's Activity Profile */}
+        <Route path="/profile" element={<Profile />} />
+
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 }
-
 export default App;

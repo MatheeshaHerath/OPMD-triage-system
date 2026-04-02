@@ -38,6 +38,7 @@ class PatientCase(Base):
     # Where the image is saved and what the AI thinks
     image_path = Column(String, nullable=True) 
     status = Column(String, default="Pending AI Analysis")
+    surgeon_note = Column(String, nullable=True)
     surgeon_notes = Column(String, nullable=True)
 
     # Timestamps the exact moment it was filed
