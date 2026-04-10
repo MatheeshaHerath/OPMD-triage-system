@@ -7,3 +7,6 @@ psycopg2-binary
 passlib
 bcrypt==3.2.2
 PyJWT
+tensorflow
+opencv-python-headless
+Pillow
