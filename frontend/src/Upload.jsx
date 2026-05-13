@@ -50,10 +50,10 @@ function Upload() {
     };
 
     return (
-        <div style={{ maxWidth: '500px', margin: '50px auto' }}>
+        <div className="upload-container">
             <h2 style={{ textAlign: 'center' }}>Primary Care Capture Portal</h2>
 
-            <form onSubmit={handleUpload} style={{ display: 'flex', flexDirection: 'column', gap: '10px', backgroundColor: '#222', padding: '20px', borderRadius: '8px', color: 'white' }}>
+            <form onSubmit={handleUpload} className="upload-form">
 
                 <label>Patient Name:</label>
                 <input type="text" value={patientName} onChange={(e) => setPatientName(e.target.value)} required />
