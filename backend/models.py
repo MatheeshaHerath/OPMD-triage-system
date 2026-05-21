@@ -37,6 +37,10 @@ class PatientCase(Base):
 
     # Where the image is saved and what the AI thinks
     image_path = Column(String, nullable=True) 
+    heatmap_path = Column(String, nullable=True)
+    prediction_class = Column(String, nullable=True) 
+    prediction_confidence = Column(String, nullable=True) 
+    prediction_results = Column(String, nullable=True)
     status = Column(String, default="Pending AI Analysis")
     surgeon_note = Column(String, nullable=True)
     surgeon_notes = Column(String, nullable=True)
