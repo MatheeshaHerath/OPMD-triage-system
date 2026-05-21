@@ -1,3 +1,8 @@
+body {
+  background-color: #f4f6f8;
+  color: #333333;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
@@ -187,30 +192,49 @@
 }
 
 /* Dashboard Table Styles */
-.dashboard-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
+/* --- LIGHT THEME UPDATE AFTER MEETING --- */
+body {
+  background-color: #f4f6f8;
+  /* Soft clinical off-white */
+  color: #333333;
+  /* Dark gray text for readability */
 }
 
+/* Update main containers */
+.profile-header,
+.calendar-panel,
+.case-detail-panel {
+  background-color: #ffffff;
+  /* Pure white panels */
+  border: 1px solid #e0e0e0;
+  /* Subtle borders instead of dark shadows */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  /* Very soft drop shadow */
+  color: #333333;
+}
+
+/* Update the Triage Table */
 .triage-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.triage-table th,
-.triage-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #444;
+  background-color: #ffffff;
 }
 
 .triage-table th {
-  background-color: #1a1a1a;
-  color: #00aaff;
+  background-color: #f8f9fa;
+  /* Light gray header */
+  color: #555555;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.triage-table td {
+  border-bottom: 1px solid #eeeeee;
+  color: #333333;
+}
+
+.triage-table tr:hover {
+  background-color: #f1f3f5;
+  /* Light gray hover effect */
 }
 
 .tracking-id {
@@ -327,4 +351,672 @@
 
 .react-calendar-heatmap .color-scale-3 {
   fill: #00aaff;
+}
+
+/* =====================
+   NAVIGATION BAR STYLES
+   ===================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e24;
+  /* Sleek dark gray */
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #333;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+  color: #4da8da;
+  /* Medical Blue */
+  font-weight: bold;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #a0a0a0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  /* Brighten on hover */
+}
+
+.logout-btn {
+  background-color: #e63946;
+  /* Alert Red */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #c1121f;
+}
+
+/* ========================
+   SURGEON DASHBOARD STYLES
+   ======================== */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.dashboard-title {
+  color: white;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+}
+
+.queue-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.queue-table-section {
+  flex: 2;
+  background-color: #2a2a35;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.medical-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+  text-align: left;
+}
+
+.medical-table th {
+  color: #4da8da;
+  padding: 1rem;
+  border-bottom: 2px solid #333;
+}
+
+.medical-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+}
+
+.view-btn {
+  background-color: #4da8da;
+  color: #121212;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.view-btn:hover {
+  background-color: #388ab8;
+}
+
+.case-detail-panel {
+  flex: 1;
+  background-color: #1e1e24;
+  border: 1px solid #4da8da;
+  border-radius: 8px;
+  padding: 2rem;
+  color: white;
+}
+
+.ai-image-placeholder {
+  background-color: #121212;
+  border: 2px dashed #4da8da;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  color: #888;
+}
+
+.surgeon-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-approve {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-reject {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* =========================================
+   SIDE-BY-SIDE IMAGES & FULLSCREEN MODAL
+   ========================================= */
+.image-comparison-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.image-box {
+  flex: 1;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.image-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(77, 168, 218, 0.2);
+  border-color: #4da8da;
+}
+
+.image-header {
+  background-color: #2a2a35;
+  padding: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+}
+
+.image-content {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+}
+
+/* The Dark Theater Overlay */
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  /* 90% opaque black */
+  z-index: 1000;
+  /* Puts it on top of everything else */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: zoom-out;
+}
+
+.close-fullscreen {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-fullscreen:hover {
+  color: #e63946;
+}
+
+.fullscreen-content {
+  text-align: center;
+  width: 80%;
+  height: 80%;
+}
+
+.fullscreen-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #4da8da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #a0a0a0;
+  margin-top: 1rem;
+}
+
+.surgeon-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  /* Forces it to respect the 100% width */
+  height: 100px;
+  background-color: #121212;
+  border: 1px solid #4da8da;
+  border-radius: 6px;
+  color: white;
+  padding: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  /* Lets the doctor drag the box larger */
+}
+
+.surgeon-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(77, 168, 218, 0.4);
+}
+
+/* Update the Login Box */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #f4f6f8;
+  /* Ensures the wrapper matches the body */
+}
+
+.login-wrapper form,
+form {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  /* The 3D drop shadow */
+  color: #333333 !important;
+}
+
+.login-wrapper input {
+  background-color: #f8f9fa !important;
+  border: 1px solid #cccccc !important;
+  color: #333333 !important;
+}
+
+.login-wrapper h2 {
+  color: #222222 !important;
+}
+
+/* --- FINAL LIGHT MODE OVERRIDES --- */
+
+/* Force the Triage Table to be light */
+.triage-table {
+  background-color: #ffffff !important;
+}
+
+.triage-table th {
+  background-color: #f8f9fa !important;
+  color: #333333 !important;
+  border-bottom: 2px solid #e0e0e0 !important;
+}
+
+.triage-table td {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border-bottom: 1px solid #eeeeee !important;
+}
+
+/* Force the Login inputs to be light */
+.login-wrapper input,
+form input {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border: 1px solid #cccccc !important;
+}
+
+/* --- ENLARGE & CENTER THE UPLOAD FORM --- */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Centers the white card under the title */
+  width: 100%;
+  padding: 2rem;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  /* Forces labels and inputs to stack vertically */
+  width: 100% !important;
+  max-width: 600px !important;
+  /* Perfect width for a modern form */
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  /* Adds the floating effect */
+  padding: 3rem !important;
+  margin-top: 1rem;
+}
+
+.upload-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #444444;
+}
+
+.upload-form input,
+.upload-form select {
+  padding: 0.8rem !important;
+  font-size: 1rem !important;
+  margin-bottom: 1.5rem !important;
+  /* Spacing between questions */
+  border: 1px solid #cccccc !important;
+  border-radius: 6px;
+  width: 100%;
+  /* Forces inputs to fill the card horizontally */
+  box-sizing: border-box;
+}
+
+.upload-form button {
+  padding: 1rem !important;
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  margin-top: 1rem !important;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upload-container input,
+.upload-container select,
+.upload-form input,
+.upload-form select {
+  padding: 0.8rem !important;
+  /* Makes the text boxes taller */
+  font-size: 1rem !important;
+  /* Makes the text slightly larger */
+  margin-bottom: 1.5rem !important;
+  /* Adds more gap between each question */
+}
+
+/* Make the submit button larger to match */
+.upload-container button,
+.upload-form button {
+  padding: 1rem !important;
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+  margin-top: 1rem !important;
+}
+
+/* --- PROFILE STATS PANEL --- */
+.stats-panel {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  color: #333333;
+}
+
+.stats-panel h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #222222;
+  border-bottom: 2px solid #f4f6f8;
+  padding-bottom: 0.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* Creates 4 equal columns */
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background-color: #f8f9fa;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  /* Cute hover effect for the demo */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  color: #007bff;
+  /* Standard Blue */
+}
+
+/* Color coding for medical urgency */
+.stat-value.warning {
+  color: #dc3545;
+}
+
+/* Red */
+.stat-value.pending {
+  color: #ffc107;
+}
+
+/* Yellow */
+.stat-value.success {
+  color: #28a745;
+}
+
+/* Green */
+
+/* --- TWO-COLUMN DASHBOARD LAYOUT --- */
+.modern-dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  width: 96% !important;
+  max-width: 1800px !important;
+  margin: 2rem auto !important;
+  align-items: flex-start;
+}
+
+.sidebar-column {
+  flex: 1 1 320px;
+  max-width: 400px;
+}
+
+.main-column {
+  flex: 999 1 600px;
+  min-width: 0;
+}
+
+/* --- ENLARGE & HIGHLIGHT THE PATIENT QUEUE --- */
+.table-wrapper {
+  background-color: #ffffff !important;
+  /* Gives the table its own white card */
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05) !important;
+  /* Slightly deeper shadow to make it pop */
+  padding: 2rem !important;
+  width: 100%;
+  overflow-x: auto;
+  min-height: 500px;
+  /* Forces the table area to be large and prominent */
+  margin-top: 2rem !important;
+}
+
+/* Push the title inside the new card to match */
+.table-wrapper h3 {
+  margin-top: 0 !important;
+  color: #222222 !important;
+  border-bottom: 2px solid #f4f6f8;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.triage-table {
+  width: 100% !important;
+  min-width: 700px;
+  border-collapse: collapse;
+}
+
+/* Highlight the table headers */
+.triage-table th {
+  background-color: #f8f9fa !important;
+  /* Soft gray to separate headers from the white background */
+  color: #333333 !important;
+  padding: 1.2rem 1rem !important;
+  font-size: 1.05rem !important;
+  border-bottom: 2px solid #cccccc !important;
+}
+
+.triage-table td {
+  padding: 1.2rem 1rem !important;
+  /* More breathing room for the rows */
+  border-bottom: 1px solid #eeeeee !important;
+  font-size: 1.05rem !important;
+}
+
+/* --- FIXING THE DARK PROFILE CARD --- */
+.profile-header {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  padding: 2.5rem 1.5rem !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Fix the unreadable text */
+.profile-header h2 {
+  color: #222222 !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.profile-header p,
+.profile-header strong {
+  color: #555555 !important;
+  font-size: 0.95rem !important;
+}
+
+/* --- TABLET & MOBILE OVERRIDES --- */
+@media (max-width: 1100px) {
+  .sidebar-column {
+    max-width: 100% !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --- CASE REVIEW EXPANSION FIX --- */
+
+/* Break the old straightjacket to let the left panel move to the edge */
+.dashboard-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+/* Make the photo area stretch out */
+.image-comparison-container {
+  display: flex !important;
+  gap: 2rem !important;
+  width: 100% !important;
+}
+
+/* Force the black photo panels to become massive and tall again */
+.image-box {
+  flex: 1 !important;
+  min-height: 400px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Ensure the textarea stretches too */
+.surgeon-textarea {
+  font-size: 1.1rem !important;
+}
+
+/* --- DEDICATED CASE REVIEW CARD --- */
+.case-review-card {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05) !important;
+  padding: 2rem !important;
+  width: 100% !important;
+  min-height: 500px !important;
+  margin-top: 0 !important;
+}
+
+/* --- RESTORE THE WHITE PROFILE CARD --- */
+.profile-header {
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 12px !important;
+  padding: 2.5rem 1.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.profile-header h2 {
+  color: #222222 !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.profile-header p,
+.profile-header strong {
+  color: #555555 !important;
+  font-size: 0.95rem !important;
 }

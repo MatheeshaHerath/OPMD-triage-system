@@ -1,65 +1,93 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 
 function Dashboard() {
-    const [patientCases, setPatientCases] = useState([]);
-    const [error, setError] = useState("");
+    const [cases, setCases] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [lastRefreshed, setLastRefreshed] = useState(new Date().toLocaleTimeString());
+    const navigate = useNavigate();
 
-    // This hook automatically fetches the data the moment the page loads
+    // We pull the fetch logic OUTSIDE the useEffect so the manual button can use it too
+    const fetchCases = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/cases');
+            const data = await response.json();
+            setCases(data);
+            setLastRefreshed(new Date().toLocaleTimeString()); // Update the timestamp
+            setLoading(false);
+        } catch (error) {
+            console.error("Failed to fetch", error);
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchCases = async () => {
-            try {
-                const response = await fetch("http://localhost:8000/api/cases");
-                if (!response.ok) {
-                    throw new Error("Failed to connect to the database vault.");
-                }
-                const data = await response.json();
-                setPatientCases(data); // Save the JSON array into our React state
-            } catch (err) {
-                setError(err.message);
-            }
-        };
-
+        // 1. Fetch immediately when the page loads
         fetchCases();
+
+        // 2. Set up the 10-second polling timer (10000 milliseconds)
+        const intervalId = setInterval(() => {
+            fetchCases();
+        }, 10000);
+
+        // 3. CRITICAL: Cleanup the timer if the doctor clicks away to another page
+        return () => clearInterval(intervalId);
     }, []);
 
     return (
         <div className="dashboard-container">
-            <h2>Surgeon's Triage Dashboard</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #333', marginBottom: '2rem' }}>
+                <h2 style={{ borderBottom: 'none', marginBottom: 0 }}>Surgeon's Triage Queue</h2>
 
-            {error && <p className="error-text">{error}</p>}
-
-            <div className="table-wrapper">
-                <table className="triage-table">
-                    <thead>
-                        <tr>
-                            <th>Tracking ID</th>
-                            <th>Date Filed</th>
-                            <th>Patient Name</th>
-                            <th>Demographics</th>
-                            <th>Risk Habit</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {patientCases.map((c) => (
-                            <tr key={c.id}>
-                                <td className="tracking-id">{c.tracking_number}</td>
-                                <td>{new Date(c.date_filed).toLocaleDateString()}</td>
-                                <td>{c.patient_name}</td>
-                                <td>{c.age} yrs | {c.sex} | {c.residential_district}</td>
-                                <td>{c.habit}</td>
-                                <td className="status-badge">{c.status}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
-                {/* If the database is empty, show a friendly message */}
-                {patientCases.length === 0 && !error && (
-                    <p className="empty-state">No patient cases pending triage.</p>
-                )}
+                {/* The Manual Refresh UI */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <small style={{ color: '#888' }}>Last updated: {lastRefreshed}</small>
+                    <button
+                        onClick={fetchCases}
+                        className="view-btn"
+                        style={{ backgroundColor: '#333', color: 'white', padding: '0.4rem 0.8rem' }}
+                    >
+                        ↻ Refresh Now
+                    </button>
+                </div>
             </div>
+
+            {loading ? (
+                <p style={{ color: 'white' }}>Loading patient data...</p>
+            ) : (
+                <div className="queue-table-section">
+                    <table className="medical-table">
+                        <thead>
+                            <tr>
+                                <th>Tracking ID</th>
+                                <th>Patient Name</th>
+                                <th>Risk Factor</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cases.map((c) => (
+                                <tr key={c.id}>
+                                    <td className="tracking-id">{c.tracking_number}</td>
+                                    <td>{c.patient_name}</td>
+                                    <td>{c.habit}</td>
+                                    <td className="status-pending">{c.status}</td>
+                                    <td>
+                                        <button
+                                            className="view-btn"
+                                            onClick={() => navigate(`/case/${c.id}`, { state: { patientCase: c } })}
+                                        >
+                                            Review Case
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }
